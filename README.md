@@ -1,0 +1,34 @@
+# Advanced Sidebar Community Guide — Branded Edition
+
+Repository name:
+advanced-sidebar-community-guide
+
+Upload all files and folders to the repository root:
+
+- index.html
+- assets/acfa-lady-justice.jpeg
+- assets/chesscom-logo.png
+
+Enable GitHub Pages:
+Settings → Pages → Deploy from a branch → main → /(root)
+
+Published URL:
+https://devilsgambit22.github.io/advanced-sidebar-community-guide/
+
+Affiliate tracking is embedded directly in the Chess.com account and membership links.
+The tracking parameter is not displayed in the webpage content.
+
+The account and membership buttons open official Chess.com pages. The guide visibly
+shows the affiliate code and includes an affiliate disclosure.
+
+Branding update:
+- Lady Justice appears only in the copyright footer.
+- The ACFA club button has been removed.
+- The membership call-to-action is labeled Upgrade Membership and uses a light-blue style.
+
+Navigation improvement:
+- Chapter tabs can be clicked and dragged horizontally with a mouse.
+- Touch devices can swipe the tab bar normally.
+- A drag threshold prevents accidental chapter activation.
+- Buttons remain clickable when the user is not dragging.
+- Horizontal mouse-wheel scrolling is supported over the chapter bar.

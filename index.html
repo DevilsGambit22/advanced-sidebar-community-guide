@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An independent beginner-friendly guide to creating and hosting original Chess.com club sidebars.">
+<title>Advanced Chess.com Sidebar Guide | DevilsGambit22</title>
+<style>
+:root{
+  color-scheme:dark;
+  --green:#81b64c;
+  --green-dark:#5d8a36;
+  --cream:#f0d9b5;
+  --brown:#b58863;
+  --blue:#4b8bbd;
+  --gold:#d5aa62;
+  --purple:#9866c7;
+  --orange:#d68b49;
+  --bg:#111412;
+  --panel:#20231f;
+  --panel2:#282c27;
+  --text:#f6f6f6;
+  --muted:#c1c5be;
+  --line:#42483f;
+  --accent:var(--green);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 50% -15%,#283125 0,#151815 44%,#0e100e 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.65}
+button,a{font:inherit}
+a{color:#b8dd91}
+img{max-width:100%}
+.site-shell{width:min(1200px,calc(100% - 20px));margin:10px auto 34px;border:1px solid #4f584b;border-radius:20px;overflow:hidden;background:rgba(17,20,18,.96);box-shadow:0 25px 70px rgba(0,0,0,.45)}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 14px;background:rgba(23,27,23,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.topbar img{width:150px;height:auto}
+.topbar-title{font-weight:800;flex:1}
+.progress-track{width:min(280px,30vw);height:7px;border-radius:99px;background:#394036;overflow:hidden}
+.progress{height:100%;width:0;background:var(--green)}
+.cover{min-height:640px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:44px;background:
+ linear-gradient(135deg,rgba(129,182,76,.16),transparent 45%),
+ linear-gradient(315deg,rgba(213,170,98,.11),transparent 50%),
+ #171b17;border-bottom:1px solid var(--line)}
+.cover-copy{max-width:690px}
+.eyebrow{color:#b7dc8d;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+.cover h1{font-size:clamp(2.4rem,6vw,5rem);line-height:1.02;margin:10px 0 18px}
+.cover p{color:var(--muted);font-size:1.08rem}
+.cover-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 17px;border-radius:9px;text-decoration:none;border:1px solid transparent;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--green);color:#17200f}
+.btn.secondary{background:#292e28;color:#fff;border-color:#566050}
+.btn.gold{background:var(--gold);color:#1b1409}
+.btn.upgrade{background:#66b9e8;color:#082236;border-color:#8fd0f3;box-shadow:0 7px 18px rgba(102,185,232,.18)}
+.btn.upgrade:hover{background:#7bc5ed}
+.brand-stage{position:relative;display:grid;place-items:center;min-height:280px}
+.brand-stage .chess-logo{position:static;width:min(430px,90%);padding:20px 26px;background:#4a754d;border-radius:18px;border:1px solid rgba(255,255,255,.18);box-shadow:0 18px 36px rgba(0,0,0,.35)}
+.affiliation-note{grid-column:1/-1;text-align:center;color:#aeb5aa;font-size:.82rem}
+.chapter-nav{position:sticky;top:63px;z-index:40;display:flex;gap:7px;padding:10px;overflow-x:auto;background:#171a17;border-bottom:1px solid var(--line)}
+.chapter-nav button{flex:0 0 auto;padding:9px 13px;border-radius:8px;border:1px solid #424a3f;background:#252a24;color:#ddd;cursor:pointer}
+
+.chapter-nav{
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:pan-x;
+  scrollbar-width:thin;
+  scrollbar-color:#66705f transparent;
+}
+.chapter-nav.dragging{
+  cursor:grabbing;
+  scroll-behavior:auto;
+}
+.chapter-nav.dragging button{
+  pointer-events:none;
+}
+.chapter-nav::-webkit-scrollbar{
+  height:5px;
+}
+.chapter-nav::-webkit-scrollbar-track{
+  background:transparent;
+}
+.chapter-nav::-webkit-scrollbar-thumb{
+  background:#66705f;
+  border-radius:999px;
+}
+
+.chapter-nav button.active{background:var(--accent);color:#161b12;border-color:transparent;font-weight:800}
+.pages{padding:20px}
+.page{display:none;animation:pageIn .38s ease}
+.page.active{display:block}
+.page[data-theme="green"]{--accent:var(--green)}
+.page[data-theme="blue"]{--accent:var(--blue)}
+.page[data-theme="gold"]{--accent:var(--gold)}
+.page[data-theme="orange"]{--accent:var(--orange)}
+.page[data-theme="purple"]{--accent:var(--purple)}
+.page[data-theme="cream"]{--accent:var(--cream)}
+.page-head{padding:25px;border:1px solid color-mix(in srgb,var(--accent) 55%,#333);border-left:7px solid var(--accent);border-radius:14px;background:linear-gradient(120deg,color-mix(in srgb,var(--accent) 12%,#222),#20231f)}
+.page-head .number{color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:.12em;font-size:.76rem}
+.page-head h2{margin:5px 0;font-size:clamp(1.65rem,4vw,2.7rem)}
+.page-head p{margin:0;color:var(--muted)}
+.content-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-top:18px}
+.card{padding:20px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}
+.card h3{margin-top:0}
+.tip{padding:14px 15px;border-radius:10px;background:color-mix(in srgb,var(--accent) 11%,#20231f);border-left:4px solid var(--accent)}
+.code{position:relative;margin:14px 0}
+.code pre{margin:0;padding:46px 15px 16px;border-radius:10px;border:1px solid #444;background:#090b09;overflow:auto;color:#e9eee7;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.copy{position:absolute;right:8px;top:8px;padding:6px 10px;border:1px solid #586057;background:#242924;color:#fff;border-radius:7px;cursor:pointer}
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;position:relative;padding:0 0 16px 45px}
+.steps li:before{content:counter(step);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#161811;font-weight:900}
+.side-card{align-self:start;position:sticky;top:132px}
+.side-card img{display:block;margin:auto;max-height:210px;object-fit:contain}
+.membership{display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:26px;border-radius:15px;border:1px solid #5b6752;background:
+ radial-gradient(circle at right,#375a28 0,transparent 40%),
+ linear-gradient(135deg,#20271d,#171a17)}
+.membership-logo{width:min(360px,100%);margin:auto}
+.code-badge{display:inline-flex;padding:7px 11px;margin:7px 0 12px;border:1px dashed #cde4b2;border-radius:8px;background:#293724;font-weight:900;letter-spacing:.07em}
+.disclosure{font-size:.8rem;color:#b7beb2}
+.page-footer{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.page-footer button{padding:11px 16px;border-radius:8px;border:1px solid #4b5448;background:#252a24;color:#fff;cursor:pointer}
+.page-footer .next{background:var(--accent);color:#161811;border-color:transparent;font-weight:800}
+.final-footer{padding:24px;text-align:center;border-top:1px solid var(--line);color:#aeb5aa;font-size:.78rem}
+.final-footer img{width:90px;border-radius:50%;margin-bottom:8px}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:850px){
+ .cover{grid-template-columns:1fr;text-align:center;padding:28px 18px;min-height:auto}
+ .cover-copy{margin:auto}.cover-actions{justify-content:center}
+ .brand-stage{margin-top:10px}.content-grid{grid-template-columns:1fr}
+ .side-card{position:static}.membership{grid-template-columns:1fr}
+ .topbar-title,.progress-track{display:none}
+}
+@media(max-width:520px){
+ .site-shell{width:100%;margin:0;border-radius:0;border-left:0;border-right:0}
+ .topbar img{width:132px}.pages{padding:10px}
+ .page-head,.card,.membership{padding:16px}
+ .cover h1{font-size:2.45rem}.page-footer{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="site-shell">
+<header class="topbar">
+  <img src="assets/chesscom-logo.png" alt="Chess.com">
+  <div class="topbar-title">Advanced Club Sidebar Guide</div>
+  <div class="progress-track" aria-label="Guide progress"><div class="progress" id="progress"></div></div>
+</header>
+
+<section class="cover">
+  <div class="cover-copy">
+    <div class="eyebrow">Independent Community Learning Guide</div>
+    <h1>How to Create an Advanced Chess.com Club Sidebar</h1>
+    <p>A complete beginner-friendly handbook for designing an original sidebar, publishing it with GitHub Pages, and embedding it into a Chess.com club page.</p>
+    <div class="cover-actions">
+      <button class="btn primary" id="startGuide" type="button">Start the Guide</button>
+      <button class="btn upgrade" id="openMembership" type="button">Upgrade Membership</button>
+    </div>
+  </div>
+  <div class="brand-stage chess-only">
+    <img class="chess-logo standalone" src="assets/chesscom-logo.png" alt="Chess.com">
+  </div>
+  <div class="affiliation-note">Created by DevilsGambit22 </div>
+</section>
+
+<nav class="chapter-nav" id="chapterNav" aria-label="Guide chapters">
+  <button class="active" data-page="welcome">Welcome</button>
+  <button data-page="files">Files</button>
+  <button data-page="html">HTML</button>
+  <button data-page="css">CSS</button>
+  <button data-page="javascript">JavaScript</button>
+  <button data-page="github">GitHub</button>
+  <button data-page="embed">Embed</button>
+  <button data-page="membership">Membership</button>
+  <button data-page="troubleshooting">Troubleshooting</button>
+</nav>
+
+<main class="pages">
+<section class="page active" id="page-welcome" data-theme="green">
+  <div class="page-head"><div class="number">Chapter 1</div><h2>Welcome</h2><p>Learn the complete workflow without needing previous coding experience.</p></div>
+  <div class="content-grid">
+    <article class="card">
+      <h3>What you will create</h3>
+      <p>You will build an original hosted webpage that can serve as a club sidebar, information board, or embedded community experience.</p>
+      <ul>
+        <li>A responsive HTML structure</li><li>Chess-inspired styling</li><li>Optional interactive features</li><li>A free GitHub Pages website</li><li>A Chess.com embed</li>
+      </ul>
+      <div class="tip"><strong>Originality matters:</strong> Use your own logos, writing, graphics, layouts, and feature ideas. This guide does not grant permission to copy ACFA's proprietary implementations.</div>
+    </article>
+    <aside class="card side-card"><h3>Independent guide</h3><p>This handbook is an educational community resource created by DevilsGambit22. It is not a club advertisement or an official Chess.com publication.</p></aside>
+  </div>
+  <div class="page-footer"><span></span><button class="next" data-next="files">Next: Understand the Files</button></div>
+</section>
+
+<section class="page" id="page-files" data-theme="cream">
+  <div class="page-head"><div class="number">Chapter 2</div><h2>Understand the Files</h2><p>Every file has a specific job.</p></div>
+  <div class="content-grid">
+    <article class="card">
+      <h3>Recommended structure</h3>
+      <div class="code"><button class="copy" type="button">Copy</button><pre>club-sidebar/
+├── index.html
+├── style.css
+├── script.js
+└── assets/
+    ├── club-logo.png
+    └── hero-image.jpg</pre></div>
+      <p><strong>index.html</strong> holds the content, <strong>style.css</strong> controls the appearance, <strong>script.js</strong> adds optional behavior, and <strong>assets</strong> stores images.</p>
+    </article>
+    <aside class="card side-card"><h3>Filename rule</h3><p>GitHub is case-sensitive. <code>Logo.png</code> and <code>logo.png</code> are different filenames.</p></aside>
+  </div>
+  <div class="page-footer"><button data-prev="welcome">Previous</button><button class="next" data-next="html">Next: HTML</button></div>
+</section>
+
+<section class="page" id="page-html" data-theme="green">
+  <div class="page-head"><div class="number">Chapter 3</div><h2>Build the HTML</h2><p>HTML creates the visible structure of your sidebar.</p></div>
+  <article class="card">
+    <div class="code"><button class="copy" type="button">Copy</button><pre>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;My Chess Club Sidebar&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="sidebar"&gt;
+    &lt;section class="hero"&gt;
+      &lt;img src="assets/club-logo.png" alt="My club logo"&gt;
+      &lt;h1&gt;My Chess Club&lt;/h1&gt;
+      &lt;p&gt;Welcome to our community.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section class="panel"&gt;
+      &lt;h2&gt;Quick Links&lt;/h2&gt;
+      &lt;a class="button"
+         href="https://www.chess.com/club/YOUR-CLUB"
+         target="_blank"
+         rel="noopener noreferrer"&gt;
+        Visit Our Club
+      &lt;/a&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+    <div class="tip">Replace every placeholder with your own club name, text, logo filename, and URL.</div>
+  </article>
+  <div class="page-footer"><button data-prev="files">Previous</button><button class="next" data-next="css">Next: CSS</button></div>
+</section>
+
+<section class="page" id="page-css" data-theme="blue">
+  <div class="page-head"><div class="number">Chapter 4</div><h2>Style It with CSS</h2><p>CSS controls colors, borders, spacing, responsiveness, and visual polish.</p></div>
+  <article class="card">
+    <div class="code"><button class="copy" type="button">Copy</button><pre>* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: #171717;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sidebar {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding: 16px;
+}
+
+.hero, .panel {
+  margin-bottom: 16px;
+  padding: 20px;
+  background: #262522;
+  border: 1px solid #4b5147;
+  border-radius: 14px;
+}
+
+.button {
+  display: block;
+  padding: 12px 15px;
+  color: #17200f;
+  background: #81b64c;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .sidebar { padding: 10px; }
+  .hero, .panel { padding: 16px; }
+}</pre></div>
+  </article>
+  <div class="page-footer"><button data-prev="html">Previous</button><button class="next" data-next="javascript">Next: JavaScript</button></div>
+</section>
+
+<section class="page" id="page-javascript" data-theme="purple">
+  <div class="page-head"><div class="number">Chapter 5</div><h2>Add Optional JavaScript</h2><p>JavaScript adds interaction, but your first sidebar can work without it.</p></div>
+  <div class="content-grid">
+    <article class="card">
+      <div class="code"><button class="copy" type="button">Copy</button><pre>const button = document.querySelector(".welcome-button");
+
+if (button) {
+  button.addEventListener("click", () => {
+    button.textContent = "Welcome to the club!";
+  });
+}</pre></div>
+      <div class="tip"><strong>Security:</strong> Never publish passwords, private keys, access tokens, or confidential member information inside your code.</div>
+    </article>
+    <aside class="card side-card"><h3>Start small</h3><p>Add one feature at a time and test after every change. This makes bugs much easier to locate.</p></aside>
+  </div>
+  <div class="page-footer"><button data-prev="css">Previous</button><button class="next" data-next="github">Next: GitHub Pages</button></div>
+</section>
+
+<section class="page" id="page-github" data-theme="gold">
+  <div class="page-head"><div class="number">Chapter 6</div><h2>Publish with GitHub Pages</h2><p>Turn your project folder into a public webpage.</p></div>
+  <article class="card">
+    <ol class="steps">
+      <li>Create a public GitHub repository.</li>
+      <li>Upload <code>index.html</code>, your other files, and the <code>assets</code> folder.</li>
+      <li>Open <strong>Settings → Pages</strong>.</li>
+      <li>Choose <strong>Deploy from a branch</strong>.</li>
+      <li>Select <strong>main</strong> and <strong>/(root)</strong>.</li>
+      <li>Save and wait for the deployment URL.</li>
+    </ol>
+    <div class="code"><button class="copy" type="button">Copy</button><pre>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/</pre></div>
+  </article>
+  <div class="page-footer"><button data-prev="javascript">Previous</button><button class="next" data-next="embed">Next: Embed</button></div>
+</section>
+
+<section class="page" id="page-embed" data-theme="orange">
+  <div class="page-head"><div class="number">Chapter 7</div><h2>Embed It on Chess.com</h2><p>Place your hosted page inside an eligible Chess.com club editor.</p></div>
+  <article class="card">
+    <div class="code"><button class="copy" type="button">Copy</button><pre>&lt;iframe
+  src="https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/"
+  title="My Chess Club Sidebar"
+  width="100%"
+  height="760"
+  scrolling="yes"
+  loading="lazy"
+  style="display:block;width:100%;max-width:100%;border:0;overflow:auto;"
+&gt;&lt;/iframe&gt;</pre></div>
+    <div class="tip">Use the editor's media or embed interface where available. Preview before publishing because supported markup can differ by posting area.</div>
+  </article>
+  <div class="page-footer"><button data-prev="github">Previous</button><button class="next" data-next="membership">Next: Membership</button></div>
+</section>
+
+<section class="page" id="page-membership" data-theme="green">
+  <div class="page-head"><div class="number">Community Resource</div><h2>Upgrade Your Chess.com Membership</h2><p>Support this educational project through the creator's Chess.com affiliate code.</p></div>
+  <div class="membership">
+    <div>
+      <img class="membership-logo" src="assets/chesscom-logo.png" alt="Chess.com">
+      <h3>Continue your chess journey</h3>
+      <p>Review the currently available Chess.com membership options directly on Chess.com.</p>
+      <div class="cover-actions">
+        <a class="btn upgrade" href="https://www.chess.com/membership?ref_id=545854877" target="_blank" rel="noopener noreferrer sponsored">Upgrade Membership</a>
+      </div>
+      <p class="disclosure"><strong>Affiliate disclosure:</strong> DevilsGambit22 is a Chess.com affiliate and may receive compensation for qualifying premium membership purchases completed through this link. Prices, plans, eligibility, discounts, and included features are controlled by Chess.com and may change.</p>
+    </div>
+</div>
+  <div class="page-footer"><button data-prev="embed">Previous</button><button class="next" data-next="troubleshooting">Next: Troubleshooting</button></div>
+</section>
+
+<section class="page" id="page-troubleshooting" data-theme="cream">
+  <div class="page-head"><div class="number">Final Chapter</div><h2>Troubleshooting and Checklist</h2><p>Resolve the most common publishing and embedding problems.</p></div>
+  <div class="content-grid">
+    <article class="card">
+      <h3>Common fixes</h3>
+      <ul>
+        <li><strong>404:</strong> Confirm Pages uses the correct branch and root folder.</li>
+        <li><strong>Broken images:</strong> Check spelling, capitalization, path, and extension.</li>
+        <li><strong>Old version:</strong> Wait for deployment, then refresh or use a private tab.</li>
+        <li><strong>Cut-off content:</strong> Increase iframe height and allow vertical scrolling.</li>
+        <li><strong>Horizontal overflow:</strong> Use responsive widths and <code>overflow-x:hidden</code>.</li>
+      </ul>
+    </article>
+    <aside class="card side-card">
+      <h3>Before publishing</h3>
+      <ul><li>Original content only</li><li>No private credentials</li><li>All links tested</li><li>Desktop and mobile checked</li><li>Affiliate disclosure visible</li></ul>
+    </aside>
+  </div>
+  <div class="page-footer"><button data-prev="membership">Previous</button><button class="next" data-next="welcome">Return to Welcome</button></div>
+</section>
+</main>
+
+<footer class="final-footer">
+  <img src="assets/acfa-lady-justice.jpeg" alt="And Chess For All emblem">
+  <div><strong>Copyright © 2026 DevilsGambit22. All rights reserved.</strong></div>
+  <p>And Chess For All Official™ and associated original branding, written materials, and proprietary implementations remain the property of DevilsGambit22.</p>
+  <p>Chess.com and its logo are trademarks of Chess.com, LLC. This independent educational guide is created by a Chess.com affiliate but is not an official Chess.com publication and should not be interpreted as an endorsement by Chess.com.</p>
+</footer>
+</div>
+
+<script>
+const pageOrder=["welcome","files","html","css","javascript","github","embed","membership","troubleshooting"];
+const pages=[...document.querySelectorAll(".page")];
+const tabs=[...document.querySelectorAll("#chapterNav button")];
+
+function showPage(name){
+  if(!pageOrder.includes(name)) return;
+  pages.forEach(page=>page.classList.toggle("active",page.id==="page-"+name));
+  tabs.forEach(tab=>tab.classList.toggle("active",tab.dataset.page===name));
+  const index=pageOrder.indexOf(name);
+  document.getElementById("progress").style.width=((index+1)/pageOrder.length*100)+"%";
+  document.documentElement.style.setProperty("--accent",getComputedStyle(document.getElementById("page-"+name)).getPropertyValue("--accent"));
+  history.replaceState(null,"","#"+name);
+  document.querySelector(".chapter-nav").scrollIntoView({behavior:"smooth",block:"start"});
+}
+let suppressTabClick=false;
+tabs.forEach(tab=>tab.addEventListener("click",(event)=>{
+  if(suppressTabClick){
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
+  showPage(tab.dataset.page);
+}));
+document.querySelectorAll("[data-next]").forEach(btn=>btn.addEventListener("click",()=>showPage(btn.dataset.next)));
+document.querySelectorAll("[data-prev]").forEach(btn=>btn.addEventListener("click",()=>showPage(btn.dataset.prev)));
+document.getElementById("startGuide").addEventListener("click",()=>showPage("welcome"));
+document.getElementById("openMembership").addEventListener("click",()=>showPage("membership"));
+
+document.querySelectorAll(".copy").forEach(btn=>{
+  btn.addEventListener("click",async()=>{
+    const text=btn.nextElementSibling.innerText;
+    try{
+      await navigator.clipboard.writeText(text);
+      btn.textContent="Copied";
+    }catch{
+      btn.textContent="Select manually";
+    }
+    setTimeout(()=>btn.textContent="Copy",1500);
+  });
+});
+
+const chapterNav=document.getElementById("chapterNav");
+let dragActive=false;
+let dragMoved=false;
+let dragStartX=0;
+let dragStartScroll=0;
+let lastX=0;
+let lastTime=0;
+let velocity=0;
+let momentumFrame=0;
+const dragThreshold=7;
+
+function stopMomentum(){
+  if(momentumFrame){
+    cancelAnimationFrame(momentumFrame);
+    momentumFrame=0;
+  }
+}
+
+function beginDrag(clientX){
+  stopMomentum();
+  dragActive=true;
+  dragMoved=false;
+  dragStartX=clientX;
+  dragStartScroll=chapterNav.scrollLeft;
+  lastX=clientX;
+  lastTime=performance.now();
+  velocity=0;
+  chapterNav.classList.add("dragging");
+}
+
+function moveDrag(clientX){
+  if(!dragActive) return;
+  const delta=clientX-dragStartX;
+  if(Math.abs(delta)>dragThreshold) dragMoved=true;
+  chapterNav.scrollLeft=dragStartScroll-delta;
+
+  const now=performance.now();
+  const elapsed=Math.max(1,now-lastTime);
+  velocity=(lastX-clientX)/elapsed*16;
+  lastX=clientX;
+  lastTime=now;
+}
+
+function runMomentum(){
+  if(Math.abs(velocity)<0.15){
+    momentumFrame=0;
+    return;
+  }
+  chapterNav.scrollLeft+=velocity;
+  velocity*=0.92;
+  momentumFrame=requestAnimationFrame(runMomentum);
+}
+
+function endDrag(){
+  if(!dragActive) return;
+  dragActive=false;
+  chapterNav.classList.remove("dragging");
+
+  if(dragMoved){
+    suppressTabClick=true;
+    setTimeout(()=>{ suppressTabClick=false; },120);
+    runMomentum();
+  }
+}
+
+chapterNav.addEventListener("pointerdown",(event)=>{
+  if(event.pointerType==="mouse" && event.button!==0) return;
+  beginDrag(event.clientX);
+  chapterNav.setPointerCapture?.(event.pointerId);
+});
+
+chapterNav.addEventListener("pointermove",(event)=>{
+  if(!dragActive) return;
+  moveDrag(event.clientX);
+});
+
+chapterNav.addEventListener("pointerup",endDrag);
+chapterNav.addEventListener("pointercancel",endDrag);
+chapterNav.addEventListener("lostpointercapture",endDrag);
+
+chapterNav.addEventListener("click",(event)=>{
+  if(dragMoved){
+    event.preventDefault();
+    event.stopPropagation();
+  }
+},true);
+
+chapterNav.addEventListener("wheel",(event)=>{
+  if(Math.abs(event.deltaY)>Math.abs(event.deltaX)){
+    chapterNav.scrollLeft+=event.deltaY;
+    event.preventDefault();
+  }
+},{passive:false});
+
+const requested=location.hash.replace("#","");
+if(pageOrder.includes(requested)) showPage(requested);
+else showPage("welcome");
+</script>
+</body>
+</html>
